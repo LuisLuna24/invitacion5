@@ -1,0 +1,171 @@
+---
+interface Props {
+  title?: string;
+  dateLabel?: string;
+  targetDate?: string; // Formato: "YYYY-MM-DDTHH:mm:ss" (ej: "2026-11-22T00:00:00")
+  bgImage: string;
+  calendarLink?: string;
+}
+
+const {
+  title = "¡Nos Casamos!",
+  dateLabel = "22 NOVIEMBRE 2026",
+  targetDate = "2026-11-22T00:00:00",
+  bgImage,
+  calendarLink = "#",
+} = Astro.props;
+---
+
+<section class="relative min-h-screen w-full flex flex-col overflow-hidden bg-zinc-900">
+  <!-- Fondo y Overlay -->
+  <div class="absolute inset-0 z-0">
+    <img
+      src={bgImage}
+      alt="Fondo de los novios"
+      class="w-full h-full object-cover object-center"
+    />
+    <!-- Gradiente superior para oscurecer el fondo y resaltar el texto -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent"></div>
+  </div>
+  
+  <!-- Contenido Principal -->
+  <div class="relative z-10 flex flex-col items-center pt-24 px-4 w-full">
+    
+    <!-- Título -->
+    <h1 class="hero-anim opacity-0 font-script text-3xl md:text-6xl text-white mb-4 drop-shadow-lg text-center">
+      {title}
+    </h1>
+
+    <!-- Fecha -->
+    <p class="hero-anim opacity-0 font-serif text-sm md:text-xl tracking-widest text-white/90 uppercase mb-8 drop-shadow-md text-center">
+      {dateLabel}
+    </p>
+
+    <!-- Contador Regresivo -->
+    <div 
+      id="countdown" 
+      data-target={targetDate}
+      class="hero-anim opacity-0 flex justify-center gap-2 md:gap-4 mb-10 w-full max-w-lg"
+    >
+      <!-- Bloque Días -->
+      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
+        <span id="days" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+        <span class="text-sm md:text-base font-serif mt-1">Días</span>
+      </div>
+      <!-- Bloque Horas -->
+      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
+        <span id="hours" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+        <span class="text-sm md:text-base font-serif mt-1">Hrs</span>
+      </div>
+      <!-- Bloque Minutos -->
+      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
+        <span id="minutes" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+        <span class="text-sm md:text-base font-serif mt-1">Mins</span>
+      </div>
+      <!-- Bloque Segundos -->
+      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
+        <span id="seconds" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+        <span class="text-sm md:text-base font-serif mt-1">Segs</span>
+      </div>
+    </div>
+
+    <!-- Botón Agregar a Calendario -->
+    <a 
+      href={calendarLink}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hero-anim opacity-0 px-6 py-2 md:px-8 md:py-3 border border-white/80 rounded-md text-white/90 font-serif text-lg md:text-xl tracking-wide hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-sm shadow-md"
+    >
+      Agregar a Calendario
+    </a>
+  </div>
+</section>
+
+<script>
+  import { gsap } from "gsap";
+
+  const initCountdown = () => {
+    // 1. Animaciones de GSAP
+    gsap.to(".hero-anim", {
+      y: 0,
+      opacity: 1,
+      duration: 1.2,
+      stagger: 0.2,
+      ease: "power3.out",
+      delay: 0.2,
+    });
+
+    // 2. Lógica del Contador Regresivo
+    const countdownElement = document.getElementById("countdown");
+    if (!countdownElement) return;
+
+    const targetDateString = countdownElement.getAttribute("data-target");
+    if (!targetDateString) return;
+
+    const targetDate = new Date(targetDateString).getTime();
+    if (isNaN(targetDate)) {
+      console.error("Fecha objetivo inválida");
+      return;
+    }
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minutesEl = document.getElementById("minutes");
+    const secondsEl = document.getElementById("seconds");
+
+    // Limpiar el intervalo anterior si existe (evita aceleración de números si el componente se recarga)
+    if ((window as any).weddingCountdownInterval) {
+      clearInterval((window as any).weddingCountdownInterval);
+    }
+
+    const updateCountdown = () => {
+      const now = Date.now();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        if (daysEl) daysEl.innerText = "00";
+        if (hoursEl) hoursEl.innerText = "00";
+        if (minutesEl) minutesEl.innerText = "00";
+        if (secondsEl) secondsEl.innerText = "00";
+        clearInterval((window as any).weddingCountdownInterval);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (daysEl) daysEl.innerText = days.toString();
+      if (hoursEl) hoursEl.innerText = hours.toString().padStart(2, "0");
+      if (minutesEl) minutesEl.innerText = minutes.toString().padStart(2, "0");
+      if (secondsEl) secondsEl.innerText = seconds.toString().padStart(2, "0");
+    };
+
+    updateCountdown(); // Llamada inicial para evitar 1 segundo de retraso (00:00:00)
+    (window as any).weddingCountdownInterval = setInterval(updateCountdown, 1000);
+  };
+
+  // Ejecución estándar en Astro
+  initCountdown();
+
+  // Soporte si estás usando Astro View Transitions
+  document.addEventListener("astro:after-swap", initCountdown);
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap');
+
+  .font-script {
+    font-family: 'Great Vibes', cursive;
+    line-height: 1.1; 
+  }
+
+  .font-serif {
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .hero-anim {
+    transform: translateY(30px);
+  }
+</style>

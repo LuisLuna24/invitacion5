@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@theme {
+  /* =========================================
+     FONDOS (Inspirados en papel, arena y pergamino)
+     ========================================= */
+  --color-surface-50: #fefdfb; /* Blanco cálido muy ligero */
+  --color-surface-100: #f9f5eb; /* Fondo principal (Crema suave) */
+  --color-surface-200: #f1ebd7; /* Para secciones o tarjetas */
+  --color-surface-300: #e5dbc1; /* Divisores y bordes */
+
+  /* =========================================
+     TEXTOS Y OSCUROS (Marrón café muy profundo)
+     ========================================= */
+  --color-ink-900: #211d18; /* Casi negro con calidez de espresso */
+  --color-ink-800: #3b342a; /* Títulos con cuerpo y peso */
+  --color-ink-700: #5c5243; /* Lectura de párrafos */
+
+  /* =========================================
+     COLOR PRINCIPAL (Ocre, Mostaza y Oro Mate)
+     ========================================= */
+  --color-primary-300: #e9d19a; /* Amarillo suave/paja */
+  --color-primary-400: #dcb96b; /* Dorado apagado */
+  --color-primary-500: #c29b40; /* Amarillo ocre base (Elegante) */
+  --color-primary-600: #a68133; /* Mostaza oscuro para botones */
+  --color-primary-700: #8a6a2a; /* Bronce para estados hover */
+  --color-primary-800: #5e481c; /* Tono tierra profundo para títulos Serif */
+
+  /* =========================================
+     TIPOGRAFÍAS
+     ========================================= */
+  --font-script: "Great Vibes", cursive;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Jost", sans-serif;
+}
+
