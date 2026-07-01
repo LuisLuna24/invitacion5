@@ -1,0 +1,194 @@
+---
+interface ImageItem {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  images?: ImageItem[];
+}
+
+const defaultImages: ImageItem[] = [
+  { src: "/images/foto2.webp", alt: "Caminando juntos" },
+  { src: "/images/foto4.webp", alt: "Miradas de complicidad" },
+  { src: "/images/foto5.webp", alt: "Detalles del amor" },
+  { src: "/images/foto6.webp", alt: "Risas compartidas" },
+  { src: "/images/foto7.webp", alt: "Tomados de la mano" },
+  { src: "/images/foto8.webp", alt: "Bajo la luz del sol" },
+  { src: "/images/foto9.webp", alt: "Abrazo cálido" },
+  { src: "/images/foto10.webp", alt: "Nuestros mejores momentos" },
+  { src: "/images/foto11.webp", alt: "Un paseo de amor" },
+  { src: "/images/foto12.webp", alt: "Aventuras compartidas" },
+  { src: "/images/foto13.webp", alt: "Aventuras compartidas" },
+  { src: "/images/foto14.webp", alt: "Aventuras compartidas" },
+  { src: "/images/foto15.webp", alt: "Aventuras compartidas" },
+];
+
+const { images = defaultImages } = Astro.props;
+---
+
+<section class="w-full bg-surface-50 py-20 px-4 border-b border-primary-200/50 flex flex-col items-center">
+  <div class="max-w-md w-full mx-auto">
+    <!-- Título -->
+    <div class="text-center mb-12">
+      <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-primary-600 font-semibold mb-2 block">Capítulo II</span>
+      <h2 class="font-serif text-3xl text-ink-800 font-light mb-4">Nuestra Galería</h2>
+      <p class="font-sans text-xs text-ink-500 italic">Cada fotografía guarda un instante eterno de nuestra felicidad.</p>
+    </div>
+
+    <!-- Layout Estilo Pinterest (Masonry) -->
+    <div class="columns-2 gap-3 space-y-3 px-2" id="pinterest-grid">
+      {images.map((img) => (
+        <div class="break-inside-avoid overflow-hidden rounded-md shadow-sm bg-surface-100 border border-primary-200/20 group cursor-pointer gallery-item relative">
+          <img
+            src={img.src}
+            alt={img.alt}
+            loading="lazy"
+            class="w-full h-auto object-cover rounded-md transition-all duration-700 group-hover:scale-105"
+          />
+          <!-- Overlay delicado al hover -->
+          <div class="absolute inset-0 bg-primary-800/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md flex items-center justify-center">
+            <span class="bg-white/90 backdrop-blur-sm text-ink-800 px-3 py-1 text-[10px] uppercase tracking-wider rounded-full shadow-sm border border-primary-200">
+              Ver foto
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Lightbox Modal (Premium) -->
+  <div
+    id="gallery-lightbox"
+    class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden items-center justify-center opacity-0 transition-opacity duration-500"
+    role="dialog"
+    aria-modal="true"
+  >
+    <!-- Botón de Cerrar -->
+    <button
+      id="lightbox-close"
+      class="absolute top-6 right-6 text-white/70 hover:text-white focus:outline-none transition-colors p-2 z-[110]"
+      aria-label="Cerrar vista"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Contenedor de Imagen Ampliada -->
+    <div class="max-w-5xl max-h-[85vh] px-4 flex items-center justify-center relative select-none">
+      <img
+        id="lightbox-img"
+        src=""
+        alt=""
+        class="max-w-full max-h-[80vh] object-contain rounded-sm shadow-2xl scale-95 transition-transform duration-500 ease-out"
+      />
+      <!-- Pie de foto opcional -->
+      <p id="lightbox-caption" class="absolute bottom-[-2.5rem] left-4 right-4 text-center text-white/80 font-serif text-sm tracking-wide"></p>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Revelado suave (Poético/Enfoque gradual)
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          // Añadir retraso escalonado si es posible
+          setTimeout(() => {
+            element.classList.add('item-revealed');
+          }, index % 4 * 100); // Pequeño stagger basado en columnas
+          revealObserver.unobserve(element);
+        }
+      });
+    }, {
+      rootMargin: "0px 0px -50px 0px",
+      threshold: 0.1
+    });
+
+    galleryItems.forEach(item => {
+      revealObserver.observe(item);
+    });
+
+    // 2. Lógica del Lightbox Modal
+    const lightbox = document.getElementById('gallery-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxClose = document.getElementById('lightbox-close');
+
+    if (lightbox && lightboxImg && lightboxClose) {
+      galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const img = item.querySelector('img');
+          if (img) {
+            // Cargar imagen en alta
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            if (lightboxCaption) {
+              lightboxCaption.textContent = img.alt || "Nuestra Boda";
+            }
+            
+            // Mostrar modal con animaciones
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            
+            // Animación de entrada
+            setTimeout(() => {
+              lightbox.classList.add('opacity-100');
+              lightboxImg.classList.remove('scale-95');
+              lightboxImg.classList.add('scale-100');
+            }, 50);
+          }
+        });
+      });
+
+      const closeLightbox = () => {
+        lightbox.classList.remove('opacity-100');
+        lightboxImg.classList.remove('scale-100');
+        lightboxImg.classList.add('scale-95');
+        setTimeout(() => {
+          lightbox.classList.remove('flex');
+          lightbox.classList.add('hidden');
+          lightboxImg.src = ""; // Limpiar
+        }, 500);
+      };
+
+      // Cerrar por click en botón, o fondo negro
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      // Cerrar con Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  /* Clases para la animación de revelado poético */
+  .gallery-item {
+    opacity: 0;
+    transform: translateY(25px);
+    filter: blur(8px);
+    transition: opacity 1.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                filter 1.8s ease-out;
+  }
+
+  .gallery-item.item-revealed {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+</style>

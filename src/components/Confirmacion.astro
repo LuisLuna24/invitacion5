@@ -1,0 +1,95 @@
+---
+interface Props {
+  phoneNumber?: string; // Formato internacional sin símbolos (ej: 521234567890)
+  deadlineLabel?: string;
+  coupleNames?: string;
+}
+
+const {
+  phoneNumber = "521234567890", // Cambiar por el número real
+  deadlineLabel = "15 de Noviembre de 2026",
+  coupleNames = "Jenny & Jona"
+} = Astro.props;
+
+// Mensaje de confirmación codificado para WhatsApp
+const defaultMessage = `¡Hola ${coupleNames}! Confirmo con mucho gusto mi asistencia a su boda. Mi nombre es: [Escribe tu Nombre completo] e iré acompañado de: [Escribe número de pases] pases. ¡Nos vemos pronto para celebrar!`;
+const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;
+---
+
+<section class="w-full bg-primary-100/50 py-20 px-6 text-center relative overflow-hidden flex flex-col items-center">
+  <!-- Adornos florales de fondo -->
+  <div class="absolute -bottom-10 -right-10 w-40 h-40 opacity-10 pointer-events-none select-none">
+    <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.75" class="text-primary-800 w-full h-full rotate-180">
+      <path d="M10 90 C 20 80, 40 80, 50 60 C 60 40, 70 40, 90 10" />
+      <path d="M30 75 C 28 65, 20 60, 15 62" />
+      <path d="M50 60 C 45 50, 38 48, 35 52" />
+      <path d="M70 40 C 65 30, 58 28, 55 32" />
+    </svg>
+  </div>
+
+  <div id="rsvp-section" class="max-w-md w-full mx-auto opacity-0 translate-y-8 transition-all duration-1000 ease-out flex flex-col items-center">
+    
+    <!-- Icono de Sobres / Checkmark -->
+    <div class="mb-4 text-primary-600">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="w-9 h-9">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+      </svg>
+    </div>
+
+    <!-- Título de Sección -->
+    <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-primary-600 font-semibold mb-2 block">Epílogo</span>
+    <h2 class="font-serif text-3xl text-ink-800 font-light mb-6">Confirmación de Asistencia</h2>
+    
+    <p class="font-sans text-xs md:text-sm text-ink-700 leading-relaxed mb-6 font-light px-4">
+      Compartir este día con ustedes es nuestra mayor alegría. Por favor, confírmennos su asistencia para poder recibirlos con todo el amor que merecen.
+    </p>
+
+    <!-- Fecha Límite -->
+    <div class="bg-surface-50 border border-primary-200 py-3 px-6 rounded-md shadow-sm mb-8">
+      <span class="font-sans text-[9px] uppercase tracking-widest text-ink-500 block mb-1">Fecha límite de confirmación</span>
+      <span class="font-serif text-base text-primary-800 font-semibold">{deadlineLabel}</span>
+    </div>
+
+    <!-- Botón de WhatsApp -->
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-2.5 px-8 py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-sans text-sm uppercase tracking-wider rounded-full shadow-lg hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-primary-500/40"
+    >
+      <!-- Icono de WhatsApp -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 transition-transform group-hover:rotate-12">
+        <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.18.283-.105.437 1.41 2.897 3.793 5.28 6.69 6.69.154.075.336.03.437-.105l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
+      </svg>
+      Confirmar por WhatsApp
+    </a>
+
+    <!-- Divisor Final -->
+    <div class="book-page-divider my-12 w-full">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442a.562.562 0 0 1 .311.977l-4.135 3.757a.563.563 0 0 0-.172.527l1.035 5.378a.562.562 0 0 1-.821.596L12 18.013l-4.887 2.762a.562.562 0 0 1-.82-.596l1.036-5.378a.563.563 0 0 0-.172-.527L3.023 11.2a.562.562 0 0 1 .311-.977l5.518-.442a.563.563 0 0 0 .475-.345l2.125-5.111Z" />
+      </svg>
+    </div>
+
+    <!-- Firma final de los Novios -->
+    <span class="font-script text-5xl text-primary-700 select-none block mb-2">{coupleNames}</span>
+    <p class="font-sans text-[9px] uppercase tracking-[0.25em] text-ink-500">¡Gracias por ser parte de nuestra historia!</p>
+
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    const target = document.getElementById('rsvp-section');
+    if (target) observer.observe(target);
+  });
+</script>

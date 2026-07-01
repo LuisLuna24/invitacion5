@@ -7,10 +7,10 @@ interface Props {
   image?: string;
 }
 
-const { 
-  title = "Nuestra Boda | Alexis & Fabiola", 
-  description = "Acompáñanos a celebrar el día más importante de nuestras vidas.",
-  image = "/og-image.jpg"
+const {
+  title = "Nuestra Boda | Jenny & Jona",
+  description = "Acompáñanos a celebrar el día más importante de nuestras vidas y sé parte de nuestra historia de amor.",
+  image = "/images/foto1.webp", // Imagen por defecto de los novios
 } = Astro.props;
 ---
 
@@ -22,7 +22,7 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <!-- El color del navegador en móviles combinará con el fondo -->
-    <meta name="theme-color" content="#f8fafc" />
+    <meta name="theme-color" content="#faf6ee" />
 
     <!-- Open Graph / WhatsApp Sharing -->
     <meta property="og:title" content={title} />
@@ -34,53 +34,214 @@ const {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
 
     <style is:global>
-
       html {
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
       }
 
-      /* Consumiendo las variables generadas por Tailwind v4 */
       body {
-        background-color: var(--color-surface-100);
+        background-color: var(--color-surface-200);
         color: var(--color-ink-700);
         font-family: var(--font-sans);
         overflow-x: hidden;
       }
 
       ::selection {
-        background-color: var(--color-primary-400);
-        color: var(--color-surface-50);
+        background-color: var(--color-primary-300);
+        color: var(--color-ink-900);
       }
 
       ::-webkit-scrollbar {
         width: 6px;
       }
-      
+
       ::-webkit-scrollbar-track {
         background: var(--color-surface-100);
       }
-      
+
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, var(--color-primary-400), var(--color-primary-800));
+        background: linear-gradient(
+          180deg,
+          var(--color-primary-300),
+          var(--color-primary-500)
+        );
         border-radius: 3px;
       }
     </style>
   </head>
 
-  <!-- Fondo exterior para pantallas grandes usando la paleta semántica -->
+  <!-- Fondo exterior para pantallas grandes -->
   <body class="flex flex-col items-center w-full min-h-screen bg-surface-200">
-    
-    <!-- Contenedor móvil principal (Blanco puro para máximo contraste) -->
-    <main class="relative mx-auto max-w-120 min-h-screen w-full bg-surface-50 shadow-2xl overflow-x-hidden text-ink-700">
+    <!-- Pantalla de Entrada (Overlay de Bienvenida) -->
+    <div
+      id="entrance-overlay"
+      class="fixed inset-0 z-[200] bg-surface-100 flex flex-col items-center justify-center text-center px-8 py-12 transition-all duration-[1200ms] cubic-bezier(0.16, 1, 0.3, 1) select-none"
+    >
+      <!-- Marco decorativo fino -->
+      <div
+        class="absolute inset-4 border border-primary-300/40 pointer-events-none rounded"
+      >
+      </div>
+
+      <div class="max-w-md w-full flex flex-col items-center z-10">
+        <!-- Nombres de la Pareja -->
+        <h1
+          class="font-serif text-3xl md:text-5xl text-ink-800 tracking-wider mb-6 leading-tight"
+        >
+          Jenny <span
+            class="font-script text-4xl md:text-6xl text-primary-500 font-light"
+            >&</span
+          > Jona
+        </h1>
+
+        <!-- Divisor -->
+        <div class="w-16 h-[1px] bg-primary-400 mb-8"></div>
+
+        <!-- Mensaje de Introducción -->
+        <p
+          class="font-sans text-[9px] md:text-[10px] text-ink-700 leading-relaxed uppercase tracking-[0.28em] mb-12 max-w-[320px] mx-auto text-balance"
+        >
+          Dos almas se conocen, se enamoran, se eligen y se unen, siendo su
+          destino una aventura inolvidable. Nos casaremos, construyendo nuestra
+          relación sobre los pilares: amor, respeto, confianza y compromiso.
+        </p>
+
+        <!-- Botón Entrar -->
+        <button
+          id="btn-entrar"
+          class="px-10 py-3 border border-primary-500 text-primary-800 rounded font-sans text-xs uppercase tracking-[0.25em] hover:bg-primary-600 hover:text-white hover:border-primary-600 active:scale-95 transition-all duration-300 cursor-pointer shadow-md"
+        >
+          Entrar
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenedor móvil principal (Crema suave para lectura de libro) -->
+    <main
+      class="relative mx-auto max-w-120 min-h-screen w-full bg-surface-100 shadow-2xl overflow-x-hidden text-ink-700 pb-12"
+    >
       <slot />
     </main>
 
+    <!-- Reproductor de Música Flotante -->
+    <div
+      id="music-player"
+      class="fixed bottom-6 right-6 z-50 flex items-center justify-center"
+    >
+      <button
+        id="music-toggle"
+        class="w-12 h-12 rounded-full bg-primary-500/90 text-white flex items-center justify-center shadow-lg hover:bg-primary-600 hover:scale-105 active:scale-95 transition-all duration-300 backdrop-blur-md cursor-pointer border border-primary-200/40 group"
+        aria-label="Reproducir música"
+      >
+        <!-- Icono de Play -->
+        <svg
+          id="icon-play"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-5 h-5 transition-transform group-hover:scale-110"
+        >
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+        <!-- Icono de Pause (oculto inicialmente) -->
+        <svg
+          id="icon-pause"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-5 h-5 hidden transition-transform group-hover:scale-110"
+        >
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+        </svg>
+      </button>
+      <audio id="background-audio" src="/music/song.mp3" loop></audio>
+    </div>
+
+    <script>
+      const initMusicAndEntrance = () => {
+        const audio = document.getElementById(
+          "background-audio",
+        ) as HTMLAudioElement;
+        const toggleBtn = document.getElementById("music-toggle");
+        const playIcon = document.getElementById("icon-play");
+        const pauseIcon = document.getElementById("icon-pause");
+
+        const overlay = document.getElementById("entrance-overlay");
+        const btnEntrar = document.getElementById("btn-entrar");
+
+        if (!audio || !toggleBtn || !playIcon || !pauseIcon) return;
+
+        let isPlaying = false;
+
+        // Desactivar scroll al inicio para obligar a interactuar
+        if (overlay) {
+          document.body.style.overflow = "hidden";
+        }
+
+        const startAudio = () => {
+          audio
+            .play()
+            .then(() => {
+              isPlaying = true;
+              playIcon.classList.add("hidden");
+              pauseIcon.classList.remove("hidden");
+              toggleBtn.classList.add("animate-pulse");
+            })
+            .catch((err) => {
+              console.log(
+                "Autoplay bloqueado por el navegador, se requiere acción directa.",
+              );
+            });
+        };
+
+        // Escucha de click en Entrar
+        if (btnEntrar && overlay) {
+          btnEntrar.addEventListener("click", () => {
+            // Habilitar scroll
+            document.body.style.overflow = "";
+
+            // Reproducir música
+            startAudio();
+
+            // Ocultar pantalla de entrada
+            overlay.classList.add("opacity-0", "pointer-events-none");
+
+            // Eliminar el elemento después de la animación de fade-out
+            setTimeout(() => {
+              overlay.remove();
+            }, 1200);
+          });
+        }
+
+        // Control del botón flotante
+        toggleBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (isPlaying) {
+            audio.pause();
+            playIcon.classList.remove("hidden");
+            pauseIcon.classList.add("hidden");
+            toggleBtn.classList.remove("animate-pulse");
+            isPlaying = false;
+          } else {
+            audio.play().then(() => {
+              playIcon.classList.add("hidden");
+              pauseIcon.classList.remove("hidden");
+              toggleBtn.classList.add("animate-pulse");
+              isPlaying = true;
+            });
+          }
+        });
+      };
+
+      // Ejecutar inicialización
+      initMusicAndEntrance();
+      document.addEventListener("astro:after-swap", initMusicAndEntrance);
+    </script>
   </body>
 </html>

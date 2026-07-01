@@ -2,29 +2,41 @@
 
 @theme {
   /* =========================================
-     FONDOS (Inspirados en papel, arena y pergamino)
+     FONDOS (Crema suave, papel y pergamino)
      ========================================= */
-  --color-surface-50: #fefdfb; /* Blanco cálido muy ligero */
-  --color-surface-100: #f9f5eb; /* Fondo principal (Crema suave) */
-  --color-surface-200: #f1ebd7; /* Para secciones o tarjetas */
-  --color-surface-300: #e5dbc1; /* Divisores y bordes */
+  --color-surface-50: #fdfbf7;   /* Blanco cálido ligero */
+  --color-surface-100: #faf6ee;  /* Fondo principal crema */
+  --color-surface-200: #f4edd9;  /* Fondos secundarios de tarjetas */
+  --color-surface-300: #eae0c5;  /* Bordes y divisores */
 
   /* =========================================
-     TEXTOS Y OSCUROS (Marrón café muy profundo)
+     TEXTOS Y OSCUROS (Café profundo y Espresso)
      ========================================= */
-  --color-ink-900: #211d18; /* Casi negro con calidez de espresso */
-  --color-ink-800: #3b342a; /* Títulos con cuerpo y peso */
-  --color-ink-700: #5c5243; /* Lectura de párrafos */
+  --color-ink-900: #352e2c;      /* Casi negro espresso */
+  --color-ink-800: #4c403d;      /* Títulos principales */
+  --color-ink-700: #665753;      /* Párrafos y descripciones */
+  --color-ink-500: #8c7974;      /* Subtítulos discretos */
 
   /* =========================================
-     COLOR PRINCIPAL (Ocre, Mostaza y Oro Mate)
+     COLOR PRINCIPAL (Rosa Viejo / Dusty Pink)
      ========================================= */
-  --color-primary-300: #e9d19a; /* Amarillo suave/paja */
-  --color-primary-400: #dcb96b; /* Dorado apagado */
-  --color-primary-500: #c29b40; /* Amarillo ocre base (Elegante) */
-  --color-primary-600: #a68133; /* Mostaza oscuro para botones */
-  --color-primary-700: #8a6a2a; /* Bronce para estados hover */
-  --color-primary-800: #5e481c; /* Tono tierra profundo para títulos Serif */
+  --color-primary-100: #fbf0ee;
+  --color-primary-200: #f6e0dc;
+  --color-primary-300: #e8c5be;  /* Rosa viejo claro */
+  --color-primary-400: #d8aba2;  /* Rosa viejo medio */
+  --color-primary-500: #c89e94;  /* Rosa viejo base (Elegante) */
+  --color-primary-600: #b2857c;  /* Rosa viejo oscuro para botones */
+  --color-primary-700: #9c6d65;  /* Rosa viejo para hover */
+  --color-primary-800: #7a4f48;  /* Tono tierra/rosa profundo */
+
+  /* =========================================
+     COLOR ACCENT (Azul Cielo Pastel)
+     ========================================= */
+  --color-accent-blue-100: #f0f4f8;
+  --color-accent-blue-200: #dbe4ec;
+  --color-accent-blue-300: #b5c7d3;  /* Azul cielo pastel principal */
+  --color-accent-blue-400: #9cb2c1;  /* Azul medio */
+  --color-accent-blue-500: #839dad;  /* Azul oscuro */
 
   /* =========================================
      TIPOGRAFÍAS
@@ -33,4 +45,38 @@
   --font-serif: "Cormorant Garamond", serif;
   --font-sans: "Jost", sans-serif;
 }
+
+/* Clases de utilidad para el efecto de revelado (Fade-In) y estilo de libro */
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.book-page-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.book-page-divider::before,
+.book-page-divider::after {
+  content: "";
+  height: 1px;
+  flex-grow: 1;
+  background-color: var(--color-primary-300);
+  max-width: 80px;
+}
+
+.book-page-divider svg {
+  color: var(--color-primary-500);
+}
+
 

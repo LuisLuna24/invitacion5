@@ -1,38 +1,53 @@
 ---
-import Love from "../components/Love.astro";
-import Welcome from "../components/Welcome.astro";
-import Contador from "../components/Contador.astro";
 import Layout from "../layouts/Layout.astro";
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Welcome from "../components/Welcome.astro";
+import Love from "../components/Love.astro";
+import Acompanan from "../components/Acompanan.astro";
+import Galeria from "../components/Galeria.astro";
+import Lugares from "../components/Lugares.astro";
+import Vestimenta from "../components/Vestimenta.astro";
+import Regalos from "../components/Regalos.astro";
+import Confirmacion from "../components/Confirmacion.astro";
 ---
 
-<Layout>
+<Layout
+  title="Nuestra Boda | Jenny & Jona"
+  description="¡Nos casamos! Acompáñanos a celebrar nuestra historia de amor este 28 de Noviembre de 2026."
+>
+  <!-- 1. Portada e Impacto con Contador Integrado -->
   <Welcome
-    groomName="Federico"
-    ;
-    brideName="María"
-    ;
-    weddingDate="2023-12-15"
-    ;
-    weddingDateLabel="15 de diciembre de 2023"
-    ;
-    heroImage="/images/foto1.jpg"
-    ;
-    heroSubtitle="Nuestra historia de amor"
-    ;
-  />
-  <Love
-    message="¡Estamos emocionados de compartir este día tan especial con ustedes! Acompáñennos a celebrar el amor y la alegría en nuestra boda."
+    brideName="Jenny"
+    groomName="Jona"
+    weddingDateLabel="28 de Noviembre de 2026"
+    targetDate="2026-11-28T17:00:00"
+    heroImage="/images/foto1.webp"
+    heroSubtitle="¡Nos Casamos!"
   />
 
-  <Contador
-    title="Cuenta Regresiva para Nuestra Boda"
-    dateLabel="¡Faltan solo unos días para el gran día!"
-    targetDate="2026-12-15T12:00:00"
-    bgImage="/images/foto3.jpg"
-    calendarLink="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+de+Federico+y+María&dates=20231215T000000Z/20231215T235959Z&details=¡Estamos+emocionados+de+compartir+este+día+tán+especial+con+ustedes!&location=Dirección+de+la+Boda&sf=true&output=xml"
-    ;
+  <!-- 2. Introducción Narrativa y Monograma -->
+  <Love
+    message="El amor es la fuerza que mueve al mundo, y hoy nos mueve a nosotros a dar este paso. Nos emociona infinitamente compartir el inicio de nuestro para siempre junto a las personas que más amamos."
+  />
+
+  <!-- 3. Quiénes nos acompañan (Padres y Padrinos) -->
+  <Acompanan />
+
+  <!-- 4. Galería de Fotos (Pinterest con Lazy Loading y Efecto Poético) -->
+  <Galeria />
+
+  <!-- 5. Ubicaciones y Horarios -->
+  <Lugares />
+
+  <!-- 6. Código de Vestimenta e Ilustración de Colores Reservados -->
+  <Vestimenta />
+
+  <!-- 7. Mesa de Regalos y Cuenta Bancaria con Copiar CLABE -->
+  <Regalos />
+
+  <!-- 8. Cierre y Confirmación por WhatsApp -->
+  <Confirmacion
+    phoneNumber="5610683465"
+    deadlineLabel="1 de noviembre de 2026"
+    coupleNames="Jenny & Jona"
   />
 </Layout>

@@ -1,0 +1,251 @@
+---
+interface RegistryProps {
+  storeName: string;
+  code?: string;
+  url?: string;
+  isMessageOnly?: boolean; // Permite que sea solo un texto/mensaje sin link
+}
+
+interface BankDetailsProps {
+  bankName: string;
+  clabe: string;
+  owner: string;
+}
+
+interface Props {
+  registries?: RegistryProps[];
+  bankDetails?: BankDetailsProps;
+  envelopeRainMode?: "cash" | "transfer" | "both" | "none"; // Control total de la modalidad
+}
+
+const {
+  registries = [
+    {
+      storeName:
+        "Elige el regalo que más se acomode a ti. Con cariño recibiremos lo que venga de tu corazón",
+      isMessageOnly: true,
+    },
+  ],
+  bankDetails = {
+    bankName: "BBVA",
+    clabe: "012180012345678901",
+    owner: "Jonathan & Jenny",
+    isTransfer: false,
+  },
+  envelopeRainMode = "cash",
+} = Astro.props;
+
+const showCash = envelopeRainMode === "cash" || envelopeRainMode === "both";
+const showTransfer =
+  envelopeRainMode === "transfer" || envelopeRainMode === "both";
+const showEnvelopeSection = envelopeRainMode !== "none";
+
+const icons = {
+  gift: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path stroke="none" d="M0 0h24v24H0z"/><path d="M3 9a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm9-1v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7m2.5-4a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>`,
+  envelope: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-mail">
+	<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+	<path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10" />
+	<path d="M3 7l9 6l9 -6" />
+</svg>`,
+  copy: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-transition-right">
+	<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+	<path d="M18 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />
+	<path d="M3 18v-12a3 3 0 1 1 6 0v12a3 3 0 0 1 -6 0" />
+	<path d="M9 12h8" />
+	<path d="M14 15l3 -3l-3 -3" />
+</svg>`,
+};
+---
+
+<section
+  class="w-full bg-surface-50 py-20 px-6 border-b border-primary-200/50 flex flex-col items-center"
+>
+  <div
+    id="gifts-section"
+    class="max-w-md w-full mx-auto opacity-0 translate-y-8 transition-all duration-1000 ease-out text-center"
+  >
+    <span
+      class="font-sans text-[10px] uppercase tracking-[0.3em] text-primary-600 font-semibold mb-2 block"
+      >Capítulo V</span
+    >
+    <h2 class="font-serif text-3xl text-ink-800 font-light mb-8">
+      Mesa de Regalos {showEnvelopeSection && "& Lluvia de Sobres"}
+    </h2>
+
+    <p
+      class="font-sans text-xs md:text-sm text-ink-700 leading-relaxed italic mb-10 font-light"
+    >
+      "Su presencia es nuestro mayor regalo. Si desean tener un detalle con
+      nosotros, hemos dispuesto lo siguiente:"
+    </p>
+
+    <div class="space-y-8">
+      {
+        registries.length > 0 && (
+          <div class="bg-white p-6 rounded-xl border border-primary-100 shadow-sm">
+            <div class="flex justify-center text-primary-500 mb-4">
+              <Fragment set:html={icons.gift} />
+            </div>
+            <h3 class="font-serif text-lg text-ink-800 mb-4">
+              Mesas de Regalos
+            </h3>
+            <div class="grid grid-cols-1 gap-3">
+              {registries.map((reg) => {
+                const isLink = reg.url && !reg.isMessageOnly;
+                const CardTag = isLink ? "a" : "div";
+
+                return (
+                  <CardTag
+                    href={isLink ? reg.url : undefined}
+                    target={isLink ? "_blank" : undefined}
+                    class={`p-4 border border-primary-100 rounded-lg transition-colors text-center ${
+                      isLink
+                        ? "hover:border-primary-300 bg-primary-50/10 cursor-pointer block"
+                        : "bg-surface-50/50 cursor-default block italic text-ink-600"
+                    }`}
+                  >
+                    <span
+                      class={`block text-sm ${isLink ? "font-semibold text-ink-800" : "font-light"}`}
+                    >
+                      {reg.storeName}
+                    </span>
+                    {reg.code && (
+                      <span class="block text-[9px] text-ink-500 uppercase mt-1 tracking-wider">
+                        Código: {reg.code}
+                      </span>
+                    )}
+                  </CardTag>
+                );
+              })}
+            </div>
+          </div>
+        )
+      }
+
+      {
+        showEnvelopeSection && (
+          <div class="bg-white p-6 rounded-xl border border-primary-100 shadow-sm transition-all text-center">
+            <div class="flex justify-center text-primary-500 mb-4">
+              <Fragment set:html={icons.envelope} />
+            </div>
+            <h3 class="font-serif text-lg text-ink-800 mb-2">
+              Lluvia de Sobres
+            </h3>
+
+            <div class="space-y-4 font-sans">
+              {showCash && (
+                <p class="text-xs text-ink-700 leading-relaxed max-w-xs mx-auto">
+                  💵 <strong>Efectivo:</strong> Si prefieres hacernos un
+                  obsequio en físico, colocaremos un buzón en la recepción para
+                  depositar sus sobres.
+                </p>
+              )}
+
+              {showCash && showTransfer && (
+                <div class="border-t border-dashed border-primary-100 my-3" />
+              )}
+
+              {showTransfer && bankDetails && (
+                <div class="bg-surface-50 p-4 rounded-lg border border-primary-100 text-left">
+                  <p class="text-[11px] uppercase tracking-wider text-primary-600 font-semibold mb-2 text-center">
+                    💳 Transferencia Bancaria
+                  </p>
+                  <div class="text-xs text-ink-700 space-y-1">
+                    <p>
+                      <span class="text-ink-400">Banco:</span>{" "}
+                      {bankDetails.bankName}
+                    </p>
+                    <p>
+                      <span class="text-ink-400">Titular:</span>{" "}
+                      {bankDetails.owner}
+                    </p>
+                    <div class="flex items-center justify-between bg-white border border-primary-100 p-2 rounded mt-2">
+                      <span
+                        class="font-mono text-xs text-ink-800 tracking-wide select-all"
+                        id="clabe-value"
+                      >
+                        {bankDetails.clabe}
+                      </span>
+                      <button
+                        id="copy-clabe-btn"
+                        data-clabe={bankDetails.clabe}
+                        class="flex items-center gap-1 text-[10px] bg-primary-50 text-primary-700 px-2 py-1 rounded border border-primary-200 hover:bg-primary-100 transition-all active:scale-95"
+                      >
+                        <Fragment set:html={icons.copy} />
+                        <span id="copy-text">Copiar</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. Animación de revelado
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("opacity-0", "translate-y-8");
+            entry.target.classList.add("opacity-100", "translate-y-0");
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    const target = document.getElementById("gifts-section");
+    if (target) observer.observe(target);
+
+    // 2. Lógica para Copiar CLABE Seguro
+    const copyBtn = document.getElementById("copy-clabe-btn");
+    const copyText = document.getElementById("copy-text");
+
+    if (copyBtn && copyText) {
+      copyBtn.addEventListener("click", () => {
+        const clabe = copyBtn.getAttribute("data-clabe");
+        if (clabe) {
+          navigator.clipboard
+            .writeText(clabe)
+            .then(() => {
+              copyText.textContent = "¡Copiado!";
+              copyBtn.classList.remove(
+                "bg-primary-50",
+                "text-primary-700",
+                "border-primary-200",
+              );
+              copyBtn.classList.add(
+                "bg-green-100",
+                "border-green-400",
+                "text-green-800",
+              );
+
+              setTimeout(() => {
+                copyText.textContent = "Copiar";
+                copyBtn.classList.remove(
+                  "bg-green-100",
+                  "border-green-400",
+                  "text-green-800",
+                );
+                copyBtn.classList.add(
+                  "bg-primary-50",
+                  "text-primary-700",
+                  "border-primary-200",
+                );
+              }, 2500);
+            })
+            .catch((err) => {
+              console.error("Error al copiar CLABE: ", err);
+            });
+        }
+      });
+    }
+  });
+</script>

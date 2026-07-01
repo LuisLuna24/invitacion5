@@ -1,101 +1,97 @@
 ---
 interface Props {
-  message: string;
-  author?: string; // Opcional, por si es una cita
+  message?: string;
 }
 
-const { message, author } = Astro.props;
+const {
+  message = "El amor no es solo mirarse el uno al otro, sino mirar juntos en la misma dirección. Decidimos comenzar este nuevo capítulo tomados de la mano y queremos celebrarlo contigo."
+} = Astro.props;
 ---
 
-<section class="w-full bg-primary-300">
-  <div
-    id="message-container"
-    class="w-full mx-auto relative opacity-0 translate-y-10"
-  >
-    <div
-      class="w-full message-card bg-primary-300 border border-primary-400 p-4 md:p-8 text-center shadow-sm relative z-10"
-    >
-      <div class="w-12 h-px bg-primary-300 mx-auto mb-8 decoration-line"></div>
+<section class="w-full bg-surface-50 py-20 px-8 border-b border-primary-200/50 relative overflow-hidden flex flex-col items-center">
+  <!-- Adorno Botánico de Fondo -->
+  <div class="absolute -top-10 -left-10 w-40 h-40 opacity-10 pointer-events-none select-none">
+    <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.75" class="text-primary-800 w-full h-full">
+      <path d="M10 90 C 20 80, 40 80, 50 60 C 60 40, 70 40, 90 10" />
+      <path d="M30 75 C 28 65, 20 60, 15 62" />
+      <path d="M50 60 C 45 50, 38 48, 35 52" />
+      <path d="M70 40 C 65 30, 58 28, 55 32" />
+    </svg>
+  </div>
 
-      <p
-        id="message-text"
-        class="text-sm md:text-xl font-serif italic text-ink-900 leading-relaxed"
-      >
-        {message}
-      </p>
+  <div id="love-story" class="max-w-md w-full mx-auto text-center opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+    
+    <!-- Título de Capítulo -->
+    <span class="font-sans text-[10px] uppercase tracking-[0.3em] text-primary-600 font-semibold mb-2 block">Capítulo I</span>
+    <h2 class="font-serif text-3xl md:text-4xl text-ink-800 font-light mb-8">Nuestra Historia de Amor</h2>
+    
+    <!-- Texto Narrativo -->
+    <p class="font-sans text-sm md:text-base text-ink-700 leading-relaxed mb-6 font-light">
+      Un día nos cruzamos en el camino, y sin planearlo, empezamos a escribir una historia juntos. Descubrimos que el hogar no es un lugar, sino una persona.
+    </p>
 
-      {
-        author && (
-          <p class="mt-6 font-sans tracking-[0.2em] text-xs uppercase text-primary-400 font-medium">
-            — {author}
-          </p>
-        )
-      }
+    <p class="font-sans text-sm md:text-base text-ink-700 leading-relaxed mb-10 font-light italic">
+      Hoy, con la certeza de querer compartir cada amanecer y cada sueño, decidimos unir nuestras vidas para siempre.
+    </p>
 
-      <div class="w-12 h-px bg-primary-300 mx-auto mt-8 decoration-line"></div>
+    <!-- Monograma Entrelazado (A & F) -->
+    <div class="my-10 flex flex-col items-center select-none">
+      <div class="relative w-28 h-28 flex items-center justify-center border border-primary-300 rounded-full p-2 bg-surface-50 shadow-sm">
+        <!-- Ramas botánicas circulares alrededor -->
+        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="0.8" class="absolute inset-0 text-primary-400 w-full h-full animate-[spin_120s_linear_infinite]">
+          <!-- Wreath izquierdo -->
+          <path d="M25 50 C 25 36, 36 25, 50 25 C 55 25, 60 27, 65 30" />
+          <path d="M25 50 C 25 64, 36 75, 50 75 C 55 75, 60 73, 65 70" />
+          <path d="M25 50 L 22 47" /><path d="M27 40 L 23 38" /><path d="M33 30 L 30 27" />
+          <path d="M25 50 L 22 53" /><path d="M27 60 L 23 62" /><path d="M33 70 L 30 73" />
+          <!-- Wreath derecho -->
+          <path d="M75 50 C 75 36, 64 25, 50 25 C 45 25, 40 27, 35 30" />
+          <path d="M75 50 C 75 64, 64 75, 50 75 C 45 75, 40 73, 35 70" />
+          <path d="M75 50 L 78 47" /><path d="M73 40 L 77 38" /><path d="M67 30 L 70 27" />
+          <path d="M75 50 L 78 53" /><path d="M73 60 L 77 62" /><path d="M67 70 L 70 73" />
+        </svg>
+
+        <!-- Iniciales Entrelazadas con tipografía cursiva simulada -->
+        <svg viewBox="0 0 60 60" class="w-20 h-20 text-primary-600" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round">
+          <!-- Letra J (Novia - Jenny / Jona, representamos J y J) -->
+          <!-- Primera J en tipografía elegante cursiva/serif -->
+          <path d="M16 22 H28 M22 22 V38 C22 43, 16 43, 14 39" class="stroke-primary-500" stroke-width="1.8" />
+          <!-- Amperstand & central -->
+          <path d="M27 33 C26 31, 28 29, 29 29 C31 29, 31 31, 29 33 C27 35, 25 38, 27 40 C28 41, 31 40, 32 37" class="stroke-primary-300" stroke-width="1.2" />
+          <!-- Segunda J -->
+          <path d="M34 22 H46 M40 22 V38 C40 43, 34 43, 32 39" class="stroke-primary-500" stroke-width="1.8" />
+        </svg>
+      </div>
+      <span class="font-serif text-lg tracking-[0.25em] text-ink-800 mt-4">JENNY & JONA</span>
     </div>
 
-    <div
-      class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary-100/30 blur-3xl rounded-full"
-    >
+    <!-- Divisor tipo libro -->
+    <div class="book-page-divider my-8">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-primary-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442a.562.562 0 0 1 .311.977l-4.135 3.757a.563.563 0 0 0-.172.527l1.035 5.378a.562.562 0 0 1-.821.596L12 18.013l-4.887 2.762a.562.562 0 0 1-.82-.596l1.036-5.378a.563.563 0 0 0-.172-.527L3.023 11.2a.562.562 0 0 1 .311-.977l5.518-.442a.563.563 0 0 0 .475-.345l2.125-5.111Z" />
+      </svg>
     </div>
+
+    <!-- Mensaje Emocional Extra -->
+    <p class="font-serif italic text-lg text-primary-800 leading-relaxed">
+      "{message}"
+    </p>
+
   </div>
 </section>
 
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+        }
+      });
+    }, { threshold: 0.15 });
 
-  gsap.registerPlugin(ScrollTrigger);
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.querySelector("#message-container");
-    const text = document.querySelector("#message-text");
-    const lines = document.querySelectorAll(".decoration-line");
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container,
-        start: "top 85%", // Comienza cuando el tope del div llega al 85% del viewport
-        toggleActions: "play none none reverse", // Se reproduce al bajar, se revierte al subir
-      },
-    });
-
-    tl.to(container, {
-      opacity: 1,
-      y: 0,
-      duration: 1.2,
-      ease: "power4.out",
-    })
-      .from(
-        text,
-        {
-          opacity: 0,
-          scale: 0.95,
-          duration: 1,
-          ease: "power2.out",
-        },
-        "-=0.8",
-      )
-      .from(
-        lines,
-        {
-          width: 0,
-          opacity: 0,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "expo.out",
-        },
-        "-=0.5",
-      );
+    const target = document.getElementById('love-story');
+    if (target) observer.observe(target);
   });
 </script>
-
-<style>
-  /* Fuente Serif para mensajes elegantes */
-  @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap");
-
-  .font-serif {
-    font-family: "Playfair Display", serif;
-  }
-</style>

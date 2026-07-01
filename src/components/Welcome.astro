@@ -2,8 +2,8 @@
 interface Props {
   groomName: string;
   brideName: string;
-  weddingDate?: string;
   weddingDateLabel: string;
+  targetDate: string; // Formato: "YYYY-MM-DDTHH:mm:ss"
   heroImage: string;
   heroSubtitle?: string;
 }
@@ -12,118 +12,172 @@ const {
   groomName,
   brideName,
   weddingDateLabel,
+  targetDate,
   heroImage,
-  heroSubtitle = 'Nos casamos',
+  heroSubtitle = '¡Nos casamos!',
 } = Astro.props;
 ---
 
 <section
   id="hero-section"
-  class="relative min-h-screen overflow-hidden bg-ink-900"
+  class="relative min-h-[100dvh] w-full flex flex-col justify-between overflow-hidden bg-ink-900 text-white"
 >
-  <!-- Contenedor Fijo: Se queda quieto -->
-  <div id="hero-fixed-container" class="absolute inset-0 z-0 h-screen w-full">
+  <!-- Imagen de fondo con overlay -->
+  <div class="absolute inset-0 z-0 h-full w-full">
     <img
       id="hero-bg"
       src={heroImage}
-      alt="Foto de la pareja"
-      class="w-full h-full object-cover object-center scale-110 opacity-0"
+      alt="Foto de portada"
+      class="w-full h-full object-cover object-center scale-105 opacity-0"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-ink-900/30 via-ink-900/10 to-ink-900/80"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 via-transparent to-transparent"></div>
+    <!-- Gradientes de superposición -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/80"></div>
   </div>
 
-  <!-- Contenedor Móvil: Este sube con el scroll -->
-  <div id="hero-content" class="relative z-10 min-h-screen flex flex-col items-center justify-end pb-20 px-10 w-full text-center text-surface-50">
-    
-    <!-- Tus elementos de texto (brideName, groomName, etc.) se mantienen igual -->
-    <div class="hero-element opacity-0 flex items-center justify-center gap-2 mb-6">
-       <!-- ... tu SVG y adornos ... -->
-    </div>
-
-    <p class="hero-element opacity-0 font-sans tracking-[0.35em] text-[10px] uppercase mb-5 text-primary-200 font-light">
+  <!-- Contenido Superior: Títulos -->
+  <div class="relative z-10 flex flex-col items-center pt-20 px-6 text-center">
+    <span class="hero-element opacity-0 font-sans tracking-[0.3em] text-[10px] uppercase text-primary-300 font-medium mb-3">
       {heroSubtitle}
-    </p>
-
-    <h1 class="font-script text-7xl leading-none mb-6 drop-shadow-2xl">
-      <span class="hero-element opacity-0 block text-surface-50">{brideName}</span>
-      <span class="hero-element opacity-0 block text-3xl font-sans font-light tracking-[0.4em] text-primary-300 my-3">&</span>
-      <span class="hero-element opacity-0 block text-surface-50">{groomName}</span>
+    </span>
+    
+    <h1 class="hero-element opacity-0 font-script text-7xl md:text-8xl leading-none drop-shadow-2xl mt-2 select-none">
+      <span class="block">{brideName}</span>
+      <span class="block text-3xl font-sans font-light tracking-[0.4em] text-primary-200 my-2">&</span>
+      <span class="block">{groomName}</span>
     </h1>
-
-    <p class="hero-element opacity-0 font-serif text-lg tracking-wide font-light text-surface-100">
+    
+    <div class="hero-element opacity-0 w-8 h-px bg-primary-300/60 my-6"></div>
+    
+    <p class="hero-element opacity-0 font-serif text-lg md:text-xl tracking-[0.2em] font-light text-surface-50/90 uppercase">
       {weddingDateLabel}
     </p>
+  </div>
+
+  <!-- Contenido Inferior: Contador y Scroll -->
+  <div class="relative z-10 w-full flex flex-col items-center pb-8 px-6 text-center">
+    
+    <!-- Contador Regresivo Delgado (Glassmorphism) -->
+    <div
+      id="hero-countdown"
+      data-target={targetDate}
+      class="hero-element opacity-0 flex justify-between gap-2 max-w-sm w-full bg-white/10 border border-white/20 backdrop-blur-md p-3 rounded-lg shadow-xl mb-8"
+    >
+      <div class="flex-1 flex flex-col items-center">
+        <span id="days" class="text-2xl font-serif font-bold text-white">00</span>
+        <span class="text-[9px] font-sans uppercase tracking-wider text-primary-200">Días</span>
+      </div>
+      <div class="w-px bg-white/10 my-1"></div>
+      <div class="flex-1 flex flex-col items-center">
+        <span id="hours" class="text-2xl font-serif font-bold text-white">00</span>
+        <span class="text-[9px] font-sans uppercase tracking-wider text-primary-200">Horas</span>
+      </div>
+      <div class="w-px bg-white/10 my-1"></div>
+      <div class="flex-1 flex flex-col items-center">
+        <span id="minutes" class="text-2xl font-serif font-bold text-white">00</span>
+        <span class="text-[9px] font-sans uppercase tracking-wider text-primary-200">Minutos</span>
+      </div>
+      <div class="w-px bg-white/10 my-1"></div>
+      <div class="flex-1 flex flex-col items-center">
+        <span id="seconds" class="text-2xl font-serif font-bold text-white">00</span>
+        <span class="text-[9px] font-sans uppercase tracking-wider text-primary-200">Segs</span>
+      </div>
+    </div>
 
     <!-- Indicador de Scroll -->
-    <div class="hero-scroll opacity-0 mt-12 flex flex-col items-center gap-2 text-surface-100/70">
-       <!-- ... tu SVG de flecha ... -->
+    <div class="hero-element opacity-0 flex flex-col items-center gap-1 cursor-pointer hover:text-primary-300 transition-colors duration-300" id="scroll-hint">
+      <span class="font-sans text-[9px] tracking-[0.25em] text-white/70 uppercase">Comienza nuestra historia</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-4 h-4 text-primary-300 animate-bounce"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
     </div>
   </div>
 </section>
 
 <script>
   import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  gsap.registerPlugin(ScrollTrigger);
 
   document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. Animación de entrada (Timeline inicial)
+    // 1. Animaciones de entrada
     const tl = gsap.timeline();
 
     tl.to("#hero-bg", {
       opacity: 1,
       scale: 1,
-      duration: 2.5,
+      duration: 2.2,
       ease: "power2.out"
     })
     .to(".hero-element", {
       opacity: 1,
       y: 0,
-      duration: 1,
-      stagger: 0.15, 
+      duration: 1.2,
+      stagger: 0.15,
       ease: "power3.out"
-    }, "-=1.5") 
-    .to(".hero-scroll", {
-      opacity: 1,
-      duration: 1
-    }, "-=0.5");
+    }, "-=1.4");
 
-    // 2. Efecto de "Fixed" y desaparición de texto
-    // Bloqueamos la sección para que no se mueva
-    ScrollTrigger.create({
-      trigger: "#hero-section",
-      start: "top top",
-      end: "bottom top",
-      pin: true,           // Mantiene la sección quieta
-      pinSpacing: false,   // Permite que la siguiente sección suba encima
-    });
+    // 2. Lógica del Contador
+    const countdownEl = document.getElementById("hero-countdown");
+    if (countdownEl) {
+      const targetStr = countdownEl.getAttribute("data-target");
+      if (targetStr) {
+        const targetDate = new Date(targetStr).getTime();
+        
+        const daysEl = document.getElementById("days");
+        const hoursEl = document.getElementById("hours");
+        const minutesEl = document.getElementById("minutes");
+        const secondsEl = document.getElementById("seconds");
 
-    // 3. Animamos el contenido de texto hacia arriba y desapareciendo
-    gsap.to("#hero-content", {
-      y: -150,
-      opacity: 0,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#hero-section",
-        start: "top top",
-        end: "bottom 40%", // Termina de desaparecer antes de que acabe la sección
-        scrub: true
+        const updateCountdown = () => {
+          const now = Date.now();
+          const distance = targetDate - now;
+
+          if (distance < 0) {
+            if (daysEl) daysEl.innerText = "00";
+            if (hoursEl) hoursEl.innerText = "00";
+            if (minutesEl) minutesEl.innerText = "00";
+            if (secondsEl) secondsEl.innerText = "00";
+            return;
+          }
+
+          const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+          if (daysEl) daysEl.innerText = d.toString().padStart(2, "0");
+          if (hoursEl) hoursEl.innerText = h.toString().padStart(2, "0");
+          if (minutesEl) minutesEl.innerText = m.toString().padStart(2, "0");
+          if (secondsEl) secondsEl.innerText = s.toString().padStart(2, "0");
+        };
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
       }
-    });
+    }
 
-    // Opcional: Un ligero zoom out a la imagen mientras haces scroll
-    gsap.to("#hero-bg", {
-      scale: 1.1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: "#hero-section",
-        start: "top top",
-        end: "bottom top",
-        scrub: true
-      }
-    });
+    // 3. Scroll al hacer clic en el indicador
+    const scrollHint = document.getElementById("scroll-hint");
+    if (scrollHint) {
+      scrollHint.addEventListener("click", () => {
+        const nextSection = document.getElementById("hero-section")?.nextElementSibling;
+        if (nextSection) {
+          nextSection.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
   });
 </script>
+
+<style>
+  .hero-element {
+    transform: translateY(20px);
+  }
+</style>

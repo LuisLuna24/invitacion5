@@ -9,14 +9,16 @@ interface Props {
 
 const {
   title = "¡Nos Casamos!",
-  dateLabel = "22 NOVIEMBRE 2026",
-  targetDate = "2026-11-22T00:00:00",
+  dateLabel = "28 NOVIEMBRE 2026",
+  targetDate = "2026-11-28T17:00:00",
   bgImage,
   calendarLink = "#",
 } = Astro.props;
 ---
 
-<section class="relative min-h-screen w-full flex flex-col overflow-hidden bg-zinc-900">
+<section
+  class="relative min-h-screen w-full flex flex-col overflow-hidden bg-zinc-900"
+>
   <!-- Fondo y Overlay -->
   <div class="absolute inset-0 z-0">
     <img
@@ -25,52 +27,82 @@ const {
       class="w-full h-full object-cover object-center"
     />
     <!-- Gradiente superior para oscurecer el fondo y resaltar el texto -->
-    <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-transparent"
+    >
+    </div>
   </div>
-  
+
   <!-- Contenido Principal -->
   <div class="relative z-10 flex flex-col items-center pt-24 px-4 w-full">
-    
     <!-- Título -->
-    <h1 class="hero-anim opacity-0 font-script text-3xl md:text-6xl text-white mb-4 drop-shadow-lg text-center">
+    <h1
+      class="hero-anim opacity-0 font-script text-3xl md:text-6xl text-white mb-4 drop-shadow-lg text-center"
+    >
       {title}
     </h1>
 
     <!-- Fecha -->
-    <p class="hero-anim opacity-0 font-serif text-sm md:text-xl tracking-widest text-white/90 uppercase mb-8 drop-shadow-md text-center">
+    <p
+      class="hero-anim opacity-0 font-serif text-sm md:text-xl tracking-widest text-white/90 uppercase mb-8 drop-shadow-md text-center"
+    >
       {dateLabel}
     </p>
 
     <!-- Contador Regresivo -->
-    <div 
-      id="countdown" 
+    <div
+      id="countdown"
       data-target={targetDate}
       class="hero-anim opacity-0 flex justify-center gap-2 md:gap-4 mb-10 w-full max-w-lg"
     >
       <!-- Bloque Días -->
-      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
-        <span id="days" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+      <div
+        class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white"
+      >
+        <span
+          id="days"
+          class="text-2xl md:text-4xl font-serif font-bold leading-none"
+          >00</span
+        >
         <span class="text-sm md:text-base font-serif mt-1">Días</span>
       </div>
       <!-- Bloque Horas -->
-      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
-        <span id="hours" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+      <div
+        class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white"
+      >
+        <span
+          id="hours"
+          class="text-2xl md:text-4xl font-serif font-bold leading-none"
+          >00</span
+        >
         <span class="text-sm md:text-base font-serif mt-1">Hrs</span>
       </div>
       <!-- Bloque Minutos -->
-      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
-        <span id="minutes" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+      <div
+        class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white"
+      >
+        <span
+          id="minutes"
+          class="text-2xl md:text-4xl font-serif font-bold leading-none"
+          >00</span
+        >
         <span class="text-sm md:text-base font-serif mt-1">Mins</span>
       </div>
       <!-- Bloque Segundos -->
-      <div class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white">
-        <span id="seconds" class="text-2xl md:text-4xl font-serif font-bold leading-none">00</span>
+      <div
+        class="flex-1 flex flex-col items-center justify-center bg-[#C1A07D]/85 backdrop-blur-sm py-3 px-2 md:py-4 rounded-sm shadow-lg text-white"
+      >
+        <span
+          id="seconds"
+          class="text-2xl md:text-4xl font-serif font-bold leading-none"
+          >00</span
+        >
         <span class="text-sm md:text-base font-serif mt-1">Segs</span>
       </div>
     </div>
 
     <!-- Botón Agregar a Calendario -->
-    <a 
+    <a
       href={calendarLink}
       target="_blank"
       rel="noopener noreferrer"
@@ -132,7 +164,9 @@ const {
       }
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -143,7 +177,10 @@ const {
     };
 
     updateCountdown(); // Llamada inicial para evitar 1 segundo de retraso (00:00:00)
-    (window as any).weddingCountdownInterval = setInterval(updateCountdown, 1000);
+    (window as any).weddingCountdownInterval = setInterval(
+      updateCountdown,
+      1000,
+    );
   };
 
   // Ejecución estándar en Astro
@@ -154,17 +191,17 @@ const {
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap');
+  @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap");
 
   .font-script {
-    font-family: 'Great Vibes', cursive;
-    line-height: 1.1; 
+    font-family: "Great Vibes", cursive;
+    line-height: 1.1;
   }
 
   .font-serif {
-    font-family: 'Playfair Display', serif;
+    font-family: "Playfair Display", serif;
   }
-  
+
   .hero-anim {
     transform: translateY(30px);
   }
